@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>REACTIVES — Official</title>
+<style>
+  :root{
+    --bg:#1a1a2e; --panel:#121223; --text:#e9f7ff; --muted:#99a2ad;
+    --c1:#00f0ff; --c2:#ff007f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  a{color:var(--c1);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+ 
+  /* HERO */
+  .hero{
+    position:relative; padding:72px 0 36px; overflow:hidden; text-align:center;
+    background:
+      radial-gradient(900px 420px at 10% -20%, rgba(0,240,255,.12), transparent 60%),
+      radial-gradient(900px 420px at 110% 120%, rgba(255,7,127,.12), transparent 60%);
+  }
+  h1{ font-size:3rem; margin-bottom:10px; }
+  .sub{color:var(--muted); margin:8px auto 24px; max-width:820px}
+ 
+  /* Perf note */
+  .perf{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;color:#b9c2cd;font-size:.95rem}
+  .perf span{padding:.4rem .7rem;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:#0b0b18}
+ 
+  /* Sections */
+  section{padding:48px 0}
+  h2{font-size:2.2rem; text-align:center; margin:0 0 10px; color:#fff}
+  .lead{text-align:center; color:#cfd7de; max-width:920px; margin:0 auto 24px}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; padding:0 10px}
+  .card{background:rgba(255,255,255,.05); border-radius:16px; padding:18px; display:flex; gap:10px; align-items:center; box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);}
+  .card:hover{background:rgba(255,255,255,.08)}
+  .emoji{font-size:1.2rem}
+ 
+  /* Stats strip */
+  .strip{background:#0b0b18; border-top:1px solid rgba(255,255,255,.06); border-bottom:1px solid rgba(255,255,255,.06);}
+  .stats{display:flex; gap:16px; justify-content:center; flex-wrap:wrap; padding:16px}
+  .pill{padding:.55rem .9rem; border-radius:999px; background:linear-gradient(90deg, rgba(0,240,255,.15), rgba(255,7,127,.15)); border:1px solid rgba(255,255,255,.12)}
+ 
+  /* Support (one-button + fallback chooser) */
+  .support{background:var(--panel); border-radius:16px; padding:24px; text-align:center; max-width:920px; margin:28px auto}
+  .btn{display:inline-block; padding:.85rem 1.2rem; border-radius:12px; background:var(--c1); color:#001018; font-weight:700}
+  .btn:hover{filter:brightness(.95)}
+  .btn.secondary{ background:transparent; color:var(--c1); border:1px solid rgba(255,255,255,.2) }
+  .btn.secondary:hover{ background:rgba(255,255,255,.06) }
+ 
+  .support-chooser{ position:relative; display:inline-block; }
+  .menu{
+    position:absolute; left:50%; transform:translateX(-50%); top:110%;
+    background:#0b0b18; border:1px solid rgba(255,255,255,.15);
+    border-radius:12px; min-width:240px; padding:6px; box-shadow:0 15px 40px rgba(0,0,0,.4);
+    display:none; z-index:50;
+  }
+  .menu.open{ display:block; }
+  .menu a, .menu button{
+    display:flex; width:100%; align-items:center; gap:.5rem; background:transparent; color:#e9f7ff;
+    border:0; text-align:left; padding:.65rem .75rem; border-radius:10px; cursor:pointer; font:inherit; text-decoration:none;
+  }
+  .menu a:hover, .menu button:hover{ background:rgba(255,255,255,.07); }
+  .menu .badge{ margin-left:auto; color:#99a2ad; font-size:.85em }
+ 
+  .backdrop{ display:none; position:fixed; inset:0; background:transparent; z-index:40; }
+  .backdrop.show{ display:block; }
+ 
+  /* Footer */
+  footer{padding:28px 16px; text-align:center; color:#8c97a2}
+  footer .links{display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:6px}
+  footer a{color:var(--c1)}
+ 
+  /* Toast */
+  .toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%);
+         background:#0b0b18; color:#e9f7ff; border:1px solid rgba(255,255,255,.15);
+         padding:.6rem .9rem; border-radius:10px; opacity:0; pointer-events:none; transition:opacity .25s}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+ 
+<section class="hero">
+<div class="wrap">
+<h1>REACTIVES</h1>
+<p class="sub">A modern arcade built around presence. Minimal controls, crisp visuals — your focus drives the score.</p>
+<div class="perf">
+<span>Optimized for iPhone</span>
+<span>Requires internet</span>
+<span>Live leaderboard</span>
+</div>
+</div>
+</section>
+ 
+<section>
+<div class="wrap">
+<h2>About the game?</h2>
+<p class="lead">Five-minute runs. Four-direction swipes. Streaks, HyperStack, and ChargePoint layering into quick, readable decisions. The game adapts to your momentum — rewarding clarity, not luck.</p>
+<div class="grid">
+<div class="card"><span class="emoji">⚡</span><div>Focus-shaped scoring</div></div>
+<div class="card"><span class="emoji">🔥</span><div>Streaks &amp; HyperStack</div></div>
+<div class="card"><span class="emoji">💥</span><div>ChargePoint</div></div>
+<div class="card"><span class="emoji">🎮</span><div>Precision swipe controls</div></div>
+<div class="card"><span class="emoji">🕑</span><div>5-minute sessions</div></div>
+<div class="card"><span class="emoji">🌈</span><div>Colorpunk visuals</div></div>
+<div class="card"><span class="emoji">🏆</span><div>Live leaderboard</div></div>
+</div>
+</div>
+</section>
+ 
+<section class="strip">
+<div class="wrap stats">
+<div class="pill">5-min runs</div>
+<div class="pill">Precision controls</div>
+<div class="pill">Live leaderboard</div>
+<div class="pill">Zero paywall</div>
+</div>
+</section>
+ 
+<section>
+<div class="wrap">
+<div class="support">
+<h2>Support</h2>
+<p class="lead">Need help or have a question?</p>
+ 
+      <!-- ОДНА КНОПКА: сначала mailto, через 1 секунду — fallback меню, если не сработало -->
+<div class="support-chooser">
+<a class="btn" id="contactSupport"
+           href="mailto:reactivesgame@gmail.com?subject=REACTIVES%20Support&body=Please%20describe%20your%20issue%3A">
+          Contact Support
+</a>
+ 
+        <!-- Fallback меню (появится, если у пользователя не настроен mailto) -->
+<div class="menu" id="supportMenu" role="menu" aria-labelledby="contactSupport">
+<a role="menuitem" id="optGmail" target="_blank" rel="noopener">Gmail <span class="badge">web</span></a>
+<a role="menuitem" id="optOutlook" target="_blank" rel="noopener">Outlook <span class="badge">web</span></a>
+<a role="menuitem" id="optYahoo" target="_blank" rel="noopener">Yahoo Mail <span class="badge">web</span></a>
+<button role="menuitem" id="optCopy" class="secondary">Copy email</button>
+</div>
+</div>
+ 
+      <p style="margin-top:10px; color:#cfd7de">reactivesgame@gmail.com</p>
+</div>
+</div>
+</section>
+ 
+<footer>
+<div class="links">
+<a href="privacy-policy.html">Privacy Policy</a><span> • </span><a href="terms-of-use.html">Terms of Use</a>
+</div>
+<div>© 2025 REACTIVES</div>
+</footer>
+ 
+<div class="backdrop" id="supportBackdrop"></div>
+<div class="toast" id="toast">Email copied</div>
+ 
+<script>
+(function(){
+  var TO = "reactivesgame@gmail.com";
+  var SUBJECT = "REACTIVES Support";
+  var BODY = "Please describe your issue:";
+ 
+  function enc(s){ return encodeURIComponent(s); }
+ 
+  // Веб-сервисы (fallback)
+  var gmail   = "https://mail.google.com/mail/?view=cm&fs=1&to="+enc(TO)+"&su="+enc(SUBJECT)+"&body="+enc(BODY);
+  var outlook = "https://outlook.live.com/owa/?path=/mail/action/compose&to="+enc(TO)+"&subject="+enc(SUBJECT)+"&body="+enc(BODY);
+  var yahoo   = "https://compose.mail.yahoo.com/?to="+enc(TO)+"&subject="+enc(SUBJECT)+"&body="+enc(BODY);
+ 
+  var btn = document.getElementById('contactSupport');
+  var menu = document.getElementById('supportMenu');
+  var backdrop = document.getElementById('supportBackdrop');
+  var toast = document.getElementById('toast');
+ 
+  var optGmail = document.getElementById('optGmail');
+  var optOutlook = document.getElementById('optOutlook');
+  var optYahoo = document.getElementById('optYahoo');
+  var optCopy = document.getElementById('optCopy');
+ 
+  if(optGmail)  optGmail.href  = gmail;
+  if(optOutlook)optOutlook.href= outlook;
+  if(optYahoo)  optYahoo.href  = yahoo;
+ 
+  function openMenu(){ if(menu) menu.classList.add('open'); if(backdrop) backdrop.classList.add('show'); }
+  function closeMenu(){ if(menu) menu.classList.remove('open'); if(backdrop) backdrop.classList.remove('show'); }
+ 
+  // 1-клик стратегия: сначала mailto, потом через секунду — fallback меню, если системный хендлер не поймал
+  if(btn){
+    btn.addEventListener('click', function(){
+      var alreadyOpened = false;
+      setTimeout(function(){
+        if(!alreadyOpened){ openMenu(); alreadyOpened = true; }
+      }, 1000); // 1 секунда — даём шанс системе открыть клиент
+      // mailto: выполняется самим браузером по href — мы не блокируем
+    });
+  }
+ 
+  if(backdrop) backdrop.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeMenu(); });
+ 
+  if(optCopy){
+    optCopy.addEventListener('click', async function(){
+      try{
+        await navigator.clipboard.writeText(TO);
+      }catch(e){
+        var tmp = document.createElement('input');
+        tmp.value = TO;
+        document.body.appendChild(tmp);
+        tmp.select(); document.execCommand('copy'); document.body.removeChild(tmp);
+      }
+      if(toast){ toast.classList.add('show'); setTimeout(function(){ toast.classList.remove('show'); }, 1300); }
+      closeMenu();
+    });
+  }
+})();
+</script>
+ 
+</body>
+</html>
