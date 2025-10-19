@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REACTIVES — A Modern Arcade of Focus and Flow</title>
+  <meta name="description" content="REACTIVES is a modern arcade-style mobile game built around focus, clarity, and reaction speed. Experience vibrant cyberpunk visuals and rhythm-driven gameplay.">
+  <meta name="author" content="Gamarea Studio">
+  
+  <meta property="og:title" content="REACTIVES — A Modern Arcade of Focus and Flow">
+  <meta property="og:description" content="Fast 5-minute sessions, colorful neon geometry, and global live leaderboard. A mobile game where your performance depends only on your focus.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@reactivesgame">
+  <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --background: hsl(250, 50%, 5%);
+      --foreground: hsl(0, 0%, 98%);
+      --card: hsl(250, 40%, 8%);
+      --card-foreground: hsl(0, 0%, 98%);
+      --primary: hsl(180, 100%, 50%);
+      --primary-foreground: hsl(250, 50%, 5%);
+      --secondary: hsl(330, 100%, 60%);
+      --muted: hsl(250, 30%, 15%);
+      --muted-foreground: hsl(0, 0%, 70%);
+      --accent: hsl(270, 100%, 60%);
+      --accent-foreground: hsl(0, 0%, 98%);
+      --border: hsl(250, 30%, 20%);
+      
+      --neon-cyan: hsl(180, 100%, 50%);
+      --neon-magenta: hsl(330, 100%, 60%);
+      --neon-yellow: hsl(50, 100%, 60%);
+      --neon-purple: hsl(270, 100%, 60%);
+      
+      --glow-cyan: 0 0 20px hsl(180 100% 50% / 0.5), 0 0 40px hsl(180 100% 50% / 0.3);
+      --glow-magenta: 0 0 20px hsl(330 100% 60% / 0.5), 0 0 40px hsl(330 100% 60% / 0.3);
+      --glow-purple: 0 0 20px hsl(270 100% 60% / 0.5), 0 0 40px hsl(270 100% 60% / 0.3);
+      --glow-mixed: 0 0 30px hsl(180 100% 50% / 0.4), 0 0 60px hsl(330 100% 60% / 0.3);
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+    }
+
+    .text-glow-cyan {
+      text-shadow: var(--glow-cyan);
+    }
+
+    .text-glow-magenta {
+      text-shadow: var(--glow-magenta);
+    }
+
+    .text-gradient {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta), var(--neon-purple));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradient-shift 3s ease infinite;
+      background-size: 200% auto;
+    }
+
+    .box-glow-mixed {
+      box-shadow: var(--glow-mixed);
+    }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background-image: url('src/assets/hero-bg.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, hsl(270 100% 20% / 0.7), hsl(250 50% 5% / 0.9), hsl(180 100% 15% / 0.7));
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 10vw, 8rem);
+      margin-bottom: 1rem;
+      animation: fade-in 1s ease-out;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1.25rem, 3vw, 2rem);
+      color: var(--muted-foreground);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      animation: fade-in 1s ease-out 0.3s both;
+    }
+
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      animation: glow-pulse 4s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    .glow-orb-1 {
+      top: 20%;
+      left: 10%;
+      width: 300px;
+      height: 300px;
+      background: var(--neon-cyan);
+      opacity: 0.3;
+    }
+
+    .glow-orb-2 {
+      top: 60%;
+      right: 15%;
+      width: 400px;
+      height: 400px;
+      background: var(--neon-magenta);
+      opacity: 0.3;
+      animation-delay: 1s;
+    }
+
+    .glow-orb-3 {
+      bottom: 10%;
+      left: 50%;
+      width: 350px;
+      height: 350px;
+      background: var(--neon-purple);
+      opacity: 0.3;
+      animation-delay: 2s;
+    }
+
+    .hero-lines {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 1rem;
+      z-index: 10;
+    }
+
+    .hero-line {
+      width: 2px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--neon-cyan), transparent);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+      z-index: 10;
+    }
+
+    .scroll-arrow {
+      width: 30px;
+      height: 30px;
+      border-bottom: 3px solid var(--neon-cyan);
+      border-right: 3px solid var(--neon-cyan);
+      transform: rotate(45deg);
+    }
+
+    /* Section Styles */
+    section {
+      padding: 5rem 1rem;
+      position: relative;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    /* About Section */
+    .about-card {
+      background: hsl(250 40% 8% / 0.5);
+      backdrop-filter: blur(10px);
+      border: 1px solid hsl(180 100% 50% / 0.3);
+      border-radius: 1rem;
+      padding: 3rem;
+      animation: fade-in 0.8s ease-out;
+    }
+
+    .about-card p {
+      font-size: 1.25rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      color: hsl(0 0% 90%);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
+      max-width: 28rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .feature-card {
+      background: hsl(250 40% 8% / 0.3);
+      border: 1px solid hsl(270 100% 60% / 0.2);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      border-color: hsl(270 100% 60% / 0.5);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-title {
+      font-size: 1.25rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-description {
+      color: var(--muted-foreground);
+    }
+
+    /* Video Section */
+    .video-container {
+      max-width: 56rem;
+      margin: 0 auto;
+      position: relative;
+      background: linear-gradient(135deg, hsl(270 100% 20% / 0.3), hsl(180 100% 50% / 0.2));
+      border-radius: 1rem;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid hsl(180 100% 50% / 0.3);
+    }
+
+    .video-placeholder {
+      text-align: center;
+      z-index: 10;
+    }
+
+    .video-icon {
+      width: 80px;
+      height: 80px;
+      border: 4px solid var(--neon-cyan);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+    }
+
+    .play-icon {
+      width: 0;
+      height: 0;
+      border-left: 25px solid var(--neon-cyan);
+      border-top: 15px solid transparent;
+      border-bottom: 15px solid transparent;
+      margin-left: 8px;
+    }
+
+    .corner-accent {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--neon-magenta);
+    }
+
+    .corner-tl { top: 1rem; left: 1rem; border-right: none; border-bottom: none; }
+    .corner-tr { top: 1rem; right: 1rem; border-left: none; border-bottom: none; }
+    .corner-bl { bottom: 1rem; left: 1rem; border-right: none; border-top: none; }
+    .corner-br { bottom: 1rem; right: 1rem; border-left: none; border-top: none; }
+
+    /* Gallery Section */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 2px solid hsl(180 100% 50% / 0.3);
+      transition: all 0.3s ease;
+      aspect-ratio: 9 / 16;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      border-color: var(--neon-cyan);
+      box-shadow: var(--glow-cyan);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Community Section */
+    .community-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 56rem;
+      margin: 0 auto;
+    }
+
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+
+    .social-link {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: hsl(250 40% 8% / 0.5);
+      border: 2px solid hsl(180 100% 50% / 0.3);
+      border-radius: 1rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: var(--neon-cyan);
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px);
+      border-color: var(--neon-cyan);
+      box-shadow: var(--glow-cyan);
+      background: hsl(180 100% 50% / 0.1);
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      fill: currentColor;
+    }
+
+    .contact-card {
+      background: hsl(250 40% 8% / 0.3);
+      border: 1px solid hsl(330 100% 60% / 0.2);
+      border-radius: 0.75rem;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .contact-title {
+      font-size: 1.5rem;
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-email {
+      color: var(--neon-cyan);
+      text-decoration: none;
+      font-size: 1.125rem;
+    }
+
+    .contact-email:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      background: hsl(250 50% 3%);
+      border-top: 1px solid var(--border);
+      padding: 3rem 1rem 1.5rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+      color: var(--primary);
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links a {
+      color: var(--muted-foreground);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted-foreground);
+    }
+
+    @media (max-width: 768px) {
+      .about-card {
+        padding: 2rem;
+      }
+
+      .about-card p {
+        font-size: 1.125rem;
+      }
+
+      section {
+        padding: 3rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+    <div class="glow-orb glow-orb-3"></div>
+    
+    <div class="hero-content">
+      <h1 class="text-gradient">REACTIVES</h1>
+      <p class="hero-tagline">A modern arcade of focus and flow.</p>
+    </div>
+    
+    <div class="hero-lines">
+      <div class="hero-line"></div>
+      <div class="hero-line"></div>
+      <div class="hero-line"></div>
+    </div>
+    
+    <div class="scroll-indicator">
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section>
+    <div class="container">
+      <h2 class="section-title">
+        <span class="text-glow-cyan" style="color: var(--primary);">About</span> the Game
+      </h2>
+      
+      <div class="about-card box-glow-mixed">
+        <p>
+          REACTIVES is a modern arcade-style mobile game built around focus, clarity, and reaction speed. 
+          Gameplay is based on precision swipes and visual awareness — your performance depends entirely on your focus.
+        </p>
+        
+        <p>
+          Experience vibrant cyberpunk visuals with neon geometry and rhythmic energy. 
+          No randomness, no paywalls — just pure skill-based gameplay that rewards focus and flow.
+        </p>
+        
+        <p>
+          Compete on the <span style="color: var(--primary); font-weight: 600;" class="text-glow-cyan">global live leaderboard</span> integrated 
+          directly in the app and see where you rank against players worldwide in real time.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🏆</div>
+          <h3 class="feature-title">Live Leaderboard</h3>
+          <p class="feature-description">Compete globally in real time</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video Section -->
+  <section>
+    <div class="container">
+      <h2 class="section-title">
+        <span class="text-glow-magenta" style="color: var(--secondary);">Watch</span> the Trailer
+      </h2>
+      
+      <div class="video-container">
+        <div class="corner-accent corner-tl"></div>
+        <div class="corner-accent corner-tr"></div>
+        <div class="corner-accent corner-bl"></div>
+        <div class="corner-accent corner-br"></div>
+        
+        <div class="video-placeholder">
+          <div class="video-icon">
+            <div class="play-icon"></div>
+          </div>
+          <h3 style="font-size: 1.5rem; color: var(--neon-cyan);">Trailer Coming Soon</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section style="background: linear-gradient(to bottom, var(--background), hsl(250 30% 15% / 0.3), var(--background));">
+    <div class="container">
+      <h2 class="section-title" style="color: var(--accent);">Gallery</h2>
+      
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="src/assets/screenshot-1.jpg" alt="REACTIVES gameplay screenshot showing neon cyberpunk arcade action">
+        </div>
+        <div class="gallery-item">
+          <img src="src/assets/screenshot-2.jpg" alt="REACTIVES mobile game featuring vibrant geometric patterns">
+        </div>
+        <div class="gallery-item">
+          <img src="src/assets/screenshot-3.jpg" alt="REACTIVES arcade game with colorful neon visual effects">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community Section -->
+  <section>
+    <div class="container">
+      <h2 class="section-title">
+        <span class="text-glow-cyan" style="color: var(--primary);">Join</span> the Community
+      </h2>
+      
+      <div class="social-links">
+        <a href="https://t.me/reactivesgame" target="_blank" rel="noopener noreferrer" class="social-link">
+          <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+          </svg>
+        </a>
+        
+        <a href="https://www.youtube.com/@ReactivesGame" target="_blank" rel="noopener noreferrer" class="social-link">
+          <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </a>
+        
+        <a href="https://tiktok.com/@gamarea.studio?_t=ZN-90R8yLvvyjO" target="_blank" rel="noopener noreferrer" class="social-link">
+          <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+          </svg>
+        </a>
+        
+        <a href="https://instagram.com/reactivesgame/reels" target="_blank" rel="noopener noreferrer" class="social-link">
+          <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="community-grid">
+        <div class="contact-card">
+          <h3 class="contact-title">Get in Touch</h3>
+          <a href="mailto:reactivesgame@gmail.com" class="contact-email">reactivesgame@gmail.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>REACTIVES</h3>
+        <p style="color: var(--muted-foreground);">A modern arcade of focus and flow.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Legal</h3>
+        <ul class="footer-links">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <ul class="footer-links">
+          <li><a href="mailto:reactivesgame@gmail.com">reactivesgame@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>© 2025 REACTIVES. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
