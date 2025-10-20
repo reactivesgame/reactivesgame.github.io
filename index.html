@@ -698,33 +698,11 @@
     <div class="gallery-wrapper">
       <button class="gallery-btn prev" onclick="moveSlide(-1)">&#10094;</button>
 
-    <div class="gallery-slider" id="gallerySlider">
-  <!-- 3 реальные изображения -->
+   <div class="gallery-slider" id="gallerySlider">
   <div class="gallery-item"><img src="images/1.png" alt=""></div>
   <div class="gallery-item"><img src="images/6.png" alt=""></div>
   <div class="gallery-item"><img src="images/8.png" alt=""></div>
-
-  <!-- 17 пустых рамок -->
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
-  <div class="gallery-item"><img src="" alt=""></div>
 </div>
-
-
 
       <button class="gallery-btn next" onclick="moveSlide(1)">&#10095;</button>
     </div>
@@ -804,52 +782,45 @@
   </footer>
 <!-- Gallery Slider Script -->
 <script>
-let currentIndex = 0;
 const slider = document.getElementById("gallerySlider");
 const items = Array.from(document.querySelectorAll(".gallery-item"));
+let currentIndex = 0;
 const visibleCount = 3;
-let autoSlideInterval;
 
-// Всего 20 рамок
-const totalItems = items.length;
+// если меньше или равно 3 — стрелки не нужны
+const hasMultipleSlides = items.length > visibleCount;
 
-// функция показа слайда
+// показ слайдов
 function showSlide(index) {
-  // зацикливание
-  if (index < 0) index = totalItems - visibleCount;
-  if (index >= totalItems - visibleCount + 1) index = 0;
+  if (!hasMultipleSlides) return; // если только 3 изображения — не двигаем
 
-  currentIndex = index;
+  const total = items.length;
 
-  const itemWidth = items[0].offsetWidth + 20;
-  const offset = -(currentIndex * itemWidth);
+  if (index < 0) currentIndex = total - visibleCount;
+  else if (index >= total - visibleCount + 1) currentIndex = 0;
+  else currentIndex = index;
+
+  const offset = -(currentIndex * (items[0].offsetWidth + 20));
   slider.style.transform = `translateX(${offset}px)`;
 }
 
-// кнопки
+// ручное управление
 function moveSlide(direction) {
   showSlide(currentIndex + direction);
 }
 
-// автопрокрутка
-function startAutoSlide() {
-  stopAutoSlide();
-  autoSlideInterval = setInterval(() => moveSlide(1), 4000);
-}
-
-function stopAutoSlide() {
-  clearInterval(autoSlideInterval);
-}
-
-// события
-document.querySelector(".gallery-wrapper").addEventListener("mouseenter", stopAutoSlide);
-document.querySelector(".gallery-wrapper").addEventListener("mouseleave", startAutoSlide);
+// адаптация при изменении размера
 window.addEventListener("resize", () => showSlide(currentIndex));
+
+// если изображений ≤ 3 — прячем стрелки
+if (!hasMultipleSlides) {
+  document.querySelectorAll(".gallery-btn").forEach(btn => btn.style.display = "none");
+}
 
 // старт
 showSlide(0);
-startAutoSlide();
 </script>
+
 
 
 </body>
