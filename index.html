@@ -399,6 +399,7 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .gallery-slider {
@@ -407,7 +408,7 @@
 }
 
 .gallery-item {
-  flex: 0 0 33.33%; /* показывает 3 карточки за раз */
+  flex: 0 0 33.33%;
   border-radius: 1rem;
   overflow: hidden;
   border: 2px solid hsl(180 100% 50% / 0.3);
@@ -424,29 +425,33 @@
   border-radius: 1rem;
 }
 
+/* --- Gallery Arrows --- */
 .gallery-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: hsl(180, 100%, 50%);
+  color: hsl(180, 100%, 60%);
   font-size: 4rem;
   cursor: pointer;
   z-index: 10;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 15px hsl(180, 100%, 70%);
 }
 
 .gallery-btn:hover {
-  color: hsl(330, 100%, 60%);
+  color: hsl(330, 100%, 70%);
+  text-shadow: 0 0 25px hsl(330, 100%, 70%);
+  transform: translateY(-50%) scale(1.1);
 }
 
 .gallery-btn.prev {
-  left: -60px;
+  left: 10px;
 }
 
 .gallery-btn.next {
-  right: -60px;
+  right: 10px;
 }
 /* --- End Gallery Slider Styles --- */
 
