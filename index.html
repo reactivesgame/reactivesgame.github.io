@@ -810,7 +810,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // двигаем по ширине одного изображения
   const itemWidth = items[0].offsetWidth + 12; // 12px = gap
-const offset = -(currentIndex * itemWidth) + 10; // 🔹 добавляем сдвиг вправо на 10px
+const offset = -(currentIndex * itemWidth) + 14; // 🔹 добавляем сдвиг вправо на 10px
 slider.style.transform = `translateX(${offset}px)`;
 
     updateButtons();
