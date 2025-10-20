@@ -698,31 +698,32 @@
     <div class="gallery-wrapper">
       <button class="gallery-btn prev" onclick="moveSlide(-1)">&#10094;</button>
 
-      <div class="gallery-slider" id="gallerySlider">
-        <!-- Реальные изображения -->
-        <div class="gallery-item"><img src="images/1.png" alt=""></div>
-        <div class="gallery-item"><img src="images/6.png" alt=""></div>
-        <div class="gallery-item"><img src="images/8.png" alt=""></div>
+     <div class="gallery-slider" id="gallerySlider">
+  <!-- 3 реальные изображения -->
+  <div class="gallery-item" data-index="1"><img src="images/1.png" alt=""></div>
+  <div class="gallery-item" data-index="2"><img src="images/6.png" alt=""></div>
+  <div class="gallery-item" data-index="3"><img src="images/8.png" alt=""></div>
 
-        <!-- Пустые рамки -->
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-        <div class="gallery-item"><img src="" alt=""></div>
-      </div>
+  <!-- 17 пустых рамок -->
+  <div class="gallery-item" data-index="4"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="5"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="6"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="7"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="8"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="9"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="10"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="11"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="12"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="13"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="14"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="15"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="16"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="17"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="18"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="19"><img src="" alt=""></div>
+  <div class="gallery-item" data-index="20"><img src="" alt=""></div>
+</div>
+
 
       <button class="gallery-btn next" onclick="moveSlide(1)">&#10095;</button>
     </div>
@@ -808,17 +809,22 @@ const items = Array.from(document.querySelectorAll(".gallery-item"));
 const visibleCount = 3;
 let autoSlideInterval;
 
-// функция перелистывания
+// сортируем элементы по data-index (1–20)
+items.sort((a, b) => {
+  return parseInt(a.dataset.index) - parseInt(b.dataset.index);
+});
+
+// основное движение
 function moveSlide(direction) {
   const totalItems = items.length;
   currentIndex += direction;
 
-  // если дошли до конца — возвращаемся на начало
+  // если перешли за последний — к первому
   if (currentIndex >= totalItems - visibleCount + 1) {
     currentIndex = 0;
   }
 
-  // если ушли влево с самого начала — возвращаем в конец
+  // если ушли влево с начала — к последнему
   if (currentIndex < 0) {
     currentIndex = totalItems - visibleCount;
   }
@@ -833,25 +839,20 @@ function startAutoSlide() {
   autoSlideInterval = setInterval(() => moveSlide(1), 4000);
 }
 
-// остановка при наведении
+// стоп и адаптация
 function stopAutoSlide() {
   clearInterval(autoSlideInterval);
 }
 
-// события для мыши
 document.querySelector(".gallery-wrapper").addEventListener("mouseenter", stopAutoSlide);
 document.querySelector(".gallery-wrapper").addEventListener("mouseleave", startAutoSlide);
+window.addEventListener("resize", () => moveSlide(0));
 
-// адаптация при изменении окна
-window.addEventListener("resize", () => {
-  const offset = -(currentIndex * (items[0].offsetWidth + 20));
-  slider.style.transform = `translateX(${offset}px)`;
-});
-
-// старт
+// запуск
+moveSlide(0);
 startAutoSlide();
-
 </script>
+
 
 
 </body>
