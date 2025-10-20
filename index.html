@@ -809,27 +809,26 @@ const items = Array.from(document.querySelectorAll(".gallery-item"));
 const visibleCount = 3;
 let autoSlideInterval;
 
-// сортируем элементы по data-index (1–20)
-items.sort((a, b) => {
+// фикс: сортировка только для логики (DOM не трогаем)
+const sortedItems = items.slice().sort((a, b) => {
   return parseInt(a.dataset.index) - parseInt(b.dataset.index);
 });
 
-// основное движение
+// правильная логика движения
 function moveSlide(direction) {
-  const totalItems = items.length;
+  const totalItems = sortedItems.length;
   currentIndex += direction;
 
-  // если перешли за последний — к первому
+  // зацикливание
   if (currentIndex >= totalItems - visibleCount + 1) {
     currentIndex = 0;
   }
-
-  // если ушли влево с начала — к последнему
   if (currentIndex < 0) {
     currentIndex = totalItems - visibleCount;
   }
 
-  const offset = -(currentIndex * (items[0].offsetWidth + 20));
+  const itemWidth = sortedItems[0].offsetWidth + 20;
+  const offset = -(currentIndex * itemWidth);
   slider.style.transform = `translateX(${offset}px)`;
 }
 
@@ -838,12 +837,11 @@ function startAutoSlide() {
   stopAutoSlide();
   autoSlideInterval = setInterval(() => moveSlide(1), 4000);
 }
-
-// стоп и адаптация
 function stopAutoSlide() {
   clearInterval(autoSlideInterval);
 }
 
+// события
 document.querySelector(".gallery-wrapper").addEventListener("mouseenter", stopAutoSlide);
 document.querySelector(".gallery-wrapper").addEventListener("mouseleave", startAutoSlide);
 window.addEventListener("resize", () => moveSlide(0));
@@ -852,7 +850,6 @@ window.addEventListener("resize", () => moveSlide(0));
 moveSlide(0);
 startAutoSlide();
 </script>
-
 
 
 </body>
