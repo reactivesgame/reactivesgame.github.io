@@ -788,20 +788,22 @@
     </div>
   </footer>
 
-<!-- Gallery Slider Script with Real Swipe -->
+<!-- Gallery Slider Script — только стрелки -->
 <script>
 const slider = document.getElementById("gallerySlider");
 const items = Array.from(document.querySelectorAll(".gallery-item"));
+const btnPrev = document.querySelector(".gallery-btn.prev");
+const btnNext = document.querySelector(".gallery-btn.next");
+
 let currentIndex = 0;
 const visibleCount = 3;
 
-// если изображений ≤ 3 — скрыть стрелки
-if (items.length <= visibleCount) {
-  document.querySelectorAll(".gallery-btn").forEach(btn => btn.style.display = "none");
-}
+// если изображений ≤ 3 — стрелки не нужны
+const hasMultipleSlides = items.length > visibleCount;
 
 // показать слайды
 function showSlide(index) {
+  if (!hasMultipleSlides) return; // не листаем, если 3 или меньше
   const total = items.length;
 
   if (index < 0) currentIndex = total - visibleCount;
@@ -812,46 +814,70 @@ function showSlide(index) {
   slider.style.transform = `translateX(${offset}px)`;
 }
 
-// стрелки
+// ручное управление
 function moveSlide(direction) {
   showSlide(currentIndex + direction);
 }
 
-// свайп пальцем
-let startX = 0;
-let currentX = 0;
-let isDragging = false;
-
-const wrapper = document.querySelector(".gallery-wrapper");
-
-wrapper.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
-  isDragging = true;
-}, { passive: true });
-
-wrapper.addEventListener("touchmove", e => {
-  if (!isDragging) return;
-  currentX = e.touches[0].clientX;
-}, { passive: true });
-
-wrapper.addEventListener("touchend", e => {
-  if (!isDragging) return;
-  const diff = currentX - startX;
-
-  if (Math.abs(diff) > 50) {
-    if (diff > 0) moveSlide(-1); // свайп вправо
-    else moveSlide(1); // свайп влево
-  }
-
-  isDragging = false;
-}, { passive: true });
+// обработчики стрелок
+if (hasMultipleSlides) {
+  btnPrev.addEventListener("click", () => moveSlide(-1));
+  btnNext.addEventListener("click", () => moveSlide(1));
+} else {
+  btnPrev.style.display = "none";
+  btnNext.style.display = "none";
+}
 
 // адаптация при изменении размера
 window.addEventListener("resize", () => showSlide(currentIndex));
 
-// запуск
+// старт
 showSlide(0);
 </script>
+
+  /* --- Responsive Mobile Fix --- */
+@media (max-width: 768px) {
+  .gallery-wrapper {
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .gallery-slider {
+    display: flex;
+    transition: transform 0.4s ease;
+    gap: 12px;
+  }
+
+  .gallery-item {
+    flex: 0 0 85%;
+    width: 85%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    border-radius: 1rem;
+    transform: scale(0.95);
+  }
+
+  /* стрелки */
+  .gallery-btn {
+    font-size: 3rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: hsl(180, 100%, 60%);
+    z-index: 10;
+  }
+
+  .gallery-btn.prev { left: 10px; }
+  .gallery-btn.next { right: 10px; }
+}
 
 
 </body>
