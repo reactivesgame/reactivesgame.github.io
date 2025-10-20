@@ -788,72 +788,63 @@
     </div>
   </footer>
 
-<!-- Gallery Slider Script — динамические стрелки -->
+<!-- === GALLERY SCRIPT (FIXED STEP, PERFECT VERSION) === -->
 <script>
-const slider = document.getElementById("gallerySlider");
-const items = Array.from(document.querySelectorAll(".gallery-item"));
-const btnPrev = document.querySelector(".gallery-btn.prev");
-const btnNext = document.querySelector(".gallery-btn.next");
+document.addEventListener("DOMContentLoaded", () => {
+  const slider = document.getElementById("gallerySlider");
+  const items = Array.from(document.querySelectorAll(".gallery-item"));
+  const btnPrev = document.querySelector(".gallery-btn.prev");
+  const btnNext = document.querySelector(".gallery-btn.next");
 
-let currentIndex = 0;
+  let currentIndex = 0;
 
-// показать слайд
-function showSlide(index) {
-  const total = items.length;
+  // показать текущий слайд
+  function showSlide(index) {
+    const total = items.length;
 
-  // ограничиваем диапазон
-  if (index < 0) index = 0;
-  if (index > total - 1) index = total - 1;
+    // ограничиваем диапазон
+    if (index < 0) index = 0;
+    if (index >= total) index = total - 1;
 
-  currentIndex = index;
+    currentIndex = index;
 
-  // движение
-  const offset = -(currentIndex * (items[0].offsetWidth + 20));
-  slider.style.transform = `translateX(${offset}px)`;
+    // двигаем по ширине одного изображения
+    const itemWidth = items[0].offsetWidth + 12; // 12px = gap
+    const offset = -(currentIndex * itemWidth);
+    slider.style.transform = `translateX(${offset}px)`;
 
-  // обновить стрелки
-  updateArrows();
-}
-
-// обновляем состояние стрелок
-function updateArrows() {
-  const total = items.length;
-
-  if (currentIndex === 0) {
-    btnPrev.style.display = "none"; // скрываем левую
-  } else {
-    btnPrev.style.display = "flex";
+    updateButtons();
   }
 
-  if (currentIndex === total - 1) {
-    btnNext.style.display = "none"; // скрываем правую
-  } else {
-    btnNext.style.display = "flex";
+  // движение по стрелкам
+  function moveSlide(direction) {
+    showSlide(currentIndex + direction);
   }
-}
 
-// обработчики стрелок
-btnPrev.addEventListener("click", () => moveSlide(-1));
-btnNext.addEventListener("click", () => moveSlide(1));
+  // обновление стрелок (скрывать в начале и конце)
+  function updateButtons() {
+    const total = items.length;
+    btnPrev.style.visibility = currentIndex === 0 ? "hidden" : "visible";
+    btnNext.style.visibility = currentIndex === total - 1 ? "hidden" : "visible";
+  }
 
-function moveSlide(direction) {
-  showSlide(currentIndex + direction);
-}
+  // обработчики
+  btnPrev.addEventListener("click", () => moveSlide(-1));
+  btnNext.addEventListener("click", () => moveSlide(1));
+  window.addEventListener("resize", () => showSlide(currentIndex));
 
-// адаптация при изменении размера окна
-window.addEventListener("resize", () => showSlide(currentIndex));
-
-// старт
-showSlide(0);
+  // старт
+  showSlide(0);
+});
 </script>
 
 <style>
-/* --- Responsive Mobile Fix --- */
+/* === RESPONSIVE MOBILE FIX (FINAL PERFECT) === */
 @media (max-width: 768px) {
   .gallery-wrapper {
-    justify-content: center;
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
+    justify-content: center;
   }
 
   .gallery-slider {
@@ -865,7 +856,6 @@ showSlide(0);
   .gallery-item {
     flex: 0 0 85%;
     width: 85%;
-    height: auto;
     margin: 0 auto;
   }
 
@@ -875,12 +865,10 @@ showSlide(0);
     object-fit: contain;
     display: block;
     border-radius: 1rem;
-    transform: scale(0.95);
   }
 
-  /* стрелки */
   .gallery-btn {
-    font-size: 3.2rem;
+    font-size: 3rem;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -894,19 +882,14 @@ showSlide(0);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: 0.3s ease;
     cursor: pointer;
-  }
-
-  .gallery-btn:hover {
-    background: rgba(0, 0, 0, 0.6);
-    color: hsl(330, 100%, 70%);
   }
 
   .gallery-btn.prev { left: 10px; }
   .gallery-btn.next { right: 10px; }
 }
 </style>
+
 
 
 </body>
