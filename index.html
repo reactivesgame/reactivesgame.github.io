@@ -776,7 +776,7 @@
       <p>© 2025 REACTIVES. All rights reserved.</p>
     </div>
   </footer>
-  <!-- Gallery Slider Script -->
+<!-- Gallery Slider Script -->
 <script>
 let currentIndex = 0;
 const slider = document.getElementById("gallerySlider");
@@ -784,28 +784,43 @@ const items = document.querySelectorAll(".gallery-item");
 const visibleCount = 3;
 let autoSlideInterval;
 
+// движение с ограничением и возвратом
 function moveSlide(direction) {
   const totalItems = items.length;
   currentIndex += direction;
-  if (currentIndex < 0) currentIndex = totalItems - visibleCount;
-  if (currentIndex > totalItems - visibleCount) currentIndex = 0;
+
+  // если дошли до конца — возвращаем в начало
+  if (currentIndex >= totalItems - visibleCount + 1) {
+    currentIndex = 0;
+  }
+
+  // если идём влево с начала — возвращаем в конец
+  if (currentIndex < 0) {
+    currentIndex = totalItems - visibleCount;
+  }
+
   const offset = -(currentIndex * (items[0].offsetWidth + 20));
   slider.style.transform = `translateX(${offset}px)`;
 }
 
+// автопрокрутка
 function startAutoSlide() {
   autoSlideInterval = setInterval(() => moveSlide(1), 4000);
 }
 
+// остановка при наведении
 function stopAutoSlide() {
   clearInterval(autoSlideInterval);
 }
 
+// пауза при наведении и возобновление
 document.querySelector('.gallery-wrapper').addEventListener('mouseenter', stopAutoSlide);
 document.querySelector('.gallery-wrapper').addEventListener('mouseleave', startAutoSlide);
 
+// запуск автопрокрутки
 startAutoSlide();
 </script>
+
 
 </body>
 </html>
