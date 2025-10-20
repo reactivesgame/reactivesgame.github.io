@@ -844,8 +844,8 @@ document.addEventListener("DOMContentLoaded", () => {
   .gallery-wrapper {
     position: relative;
     overflow: hidden;
-    justify-content: center;
     display: flex;
+    justify-content: center;
     align-items: center;
   }
 
@@ -853,13 +853,12 @@ document.addEventListener("DOMContentLoaded", () => {
     display: flex;
     transition: transform 0.4s ease;
     gap: 16px;
-    padding-left: 10%; /* немного смещаем центр */
-    padding-right: 6%; /* меньше справа для баланса */
+    padding: 0 9%; /* ровный отступ с обеих сторон */
   }
 
   .gallery-item {
-    flex: 0 0 80%;
-    width: 80%;
+    flex: 0 0 82%;
+    width: 82%;
     margin: 0 auto;
   }
 
@@ -871,7 +870,6 @@ document.addEventListener("DOMContentLoaded", () => {
     border-radius: 1rem;
   }
 
-  /* стрелки */
   .gallery-btn {
     font-size: 3rem;
     position: absolute;
@@ -890,8 +888,8 @@ document.addEventListener("DOMContentLoaded", () => {
     cursor: pointer;
   }
 
-  .gallery-btn.prev { left: 12px; }
-  .gallery-btn.next { right: 12px; }
+  .gallery-btn.prev { left: 4%; } /* стрелки немного ближе к краю */
+  .gallery-btn.next { right: 4%; }
 }
 </style>
 
