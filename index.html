@@ -828,7 +828,7 @@ if (!hasMultipleSlides) {
 showSlide(0);
 </script>
 
-  <!-- Swipe support for mobile -->
+<!-- Swipe support for mobile -->
 <script>
 let touchStartX = 0;
 let touchEndX = 0;
@@ -843,13 +843,15 @@ if (galleryWrapper) {
     touchEndX = e.changedTouches[0].screenX;
     handleSwipe();
   });
+}
 
-  function handleSwipe() {
-    const swipeDistance = touchEndX - touchStartX;
-    if (Math.abs(swipeDistance) > 50) { // фильтр случайных касаний
-      if (swipeDistance > 0) moveSlide(-1); // свайп вправо
-      else moveSlide(1); // свайп влево
-    }
+function handleSwipe() {
+  const swipeDistance = touchEndX - touchStartX;
+
+  // чтобы избежать ложных свайпов
+  if (Math.abs(swipeDistance) > 50) {
+    if (swipeDistance > 0) moveSlide(-1); // свайп вправо
+    else moveSlide(1); // свайп влево
   }
 }
 </script>
