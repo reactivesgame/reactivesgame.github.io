@@ -788,7 +788,7 @@
     </div>
   </footer>
 
-<!-- Gallery Slider Script — только стрелки -->
+<!-- Gallery Slider Script — стрелки всегда активны -->
 <script>
 const slider = document.getElementById("gallerySlider");
 const items = Array.from(document.querySelectorAll(".gallery-item"));
@@ -798,12 +798,8 @@ const btnNext = document.querySelector(".gallery-btn.next");
 let currentIndex = 0;
 const visibleCount = 3;
 
-// если изображений ≤ 3 — стрелки не нужны
-const hasMultipleSlides = items.length > visibleCount;
-
 // показать слайды
 function showSlide(index) {
-  if (!hasMultipleSlides) return; // не листаем, если 3 или меньше
   const total = items.length;
 
   if (index < 0) currentIndex = total - visibleCount;
@@ -814,28 +810,23 @@ function showSlide(index) {
   slider.style.transform = `translateX(${offset}px)`;
 }
 
-// ручное управление
+// стрелки
+btnPrev.addEventListener("click", () => moveSlide(-1));
+btnNext.addEventListener("click", () => moveSlide(1));
+
 function moveSlide(direction) {
   showSlide(currentIndex + direction);
-}
-
-// обработчики стрелок
-if (hasMultipleSlides) {
-  btnPrev.addEventListener("click", () => moveSlide(-1));
-  btnNext.addEventListener("click", () => moveSlide(1));
-} else {
-  btnPrev.style.display = "none";
-  btnNext.style.display = "none";
 }
 
 // адаптация при изменении размера
 window.addEventListener("resize", () => showSlide(currentIndex));
 
-// старт
+// запуск
 showSlide(0);
 </script>
 
-  /* --- Responsive Mobile Fix --- */
+
+/* --- Responsive Mobile Fix --- */
 @media (max-width: 768px) {
   .gallery-wrapper {
     justify-content: center;
@@ -846,7 +837,7 @@ showSlide(0);
   .gallery-slider {
     display: flex;
     transition: transform 0.4s ease;
-    gap: 12px;
+    gap: 12px; /* расстояние между изображениями */
   }
 
   .gallery-item {
@@ -865,20 +856,32 @@ showSlide(0);
     transform: scale(0.95);
   }
 
-  /* стрелки */
+  /* стрелки всегда видны */
   .gallery-btn {
-    font-size: 3rem;
+    font-size: 3.2rem;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     color: hsl(180, 100%, 60%);
     z-index: 10;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s ease;
+  }
+
+  .gallery-btn:hover {
+    background: rgba(0, 0, 0, 0.6);
+    color: hsl(330, 100%, 70%);
   }
 
   .gallery-btn.prev { left: 10px; }
   .gallery-btn.next { right: 10px; }
 }
-
 
 </body>
 </html>
