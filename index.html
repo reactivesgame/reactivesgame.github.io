@@ -584,6 +584,30 @@
         padding: 3rem 1rem;
       }
     }
+/* --- Responsive Mobile Fix --- */
+@media (max-width: 768px) {
+  .gallery-item {
+    flex: 0 0 70%;
+    width: 70%;
+    height: auto;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    transform: scale(0.8);
+  }
+
+  .gallery-wrapper {
+    max-width: 100%;
+  }
+
+  .gallery-btn {
+    font-size: 2.5rem;
+  }
+}
+    
   </style>
 </head>
 <body>
@@ -780,44 +804,52 @@
 <script>
 let currentIndex = 0;
 const slider = document.getElementById("gallerySlider");
-const items = document.querySelectorAll(".gallery-item");
+const items = Array.from(document.querySelectorAll(".gallery-item img"));
 const visibleCount = 3;
 let autoSlideInterval;
 
-// движение с ограничением и возвратом
-function moveSlide(direction) {
-  const totalItems = items.length;
-  currentIndex += direction;
+// фильтруем только реально существующие изображения
+const realItems = items.filter(img => img.src && img.src.trim() !== "");
 
-  // если дошли до конца — возвращаем в начало
-  if (currentIndex >= totalItems - visibleCount + 1) {
-    currentIndex = 0;
-  }
+// основной показ
+function showSlide(index) {
+  const total = realItems.length;
 
-  // если идём влево с начала — возвращаем в конец
-  if (currentIndex < 0) {
-    currentIndex = totalItems - visibleCount;
-  }
+  if (total === 0) return;
 
-  const offset = -(currentIndex * (items[0].offsetWidth + 20));
+  if (index < 0) currentIndex = total - visibleCount;
+  else if (index >= total - visibleCount + 1) currentIndex = 0;
+  else currentIndex = index;
+
+  const itemWidth = realItems[0].offsetWidth + 20; // ширина + отступ
+  const offset = -(currentIndex * itemWidth);
   slider.style.transform = `translateX(${offset}px)`;
+}
+
+// движение
+function moveSlide(direction) {
+  showSlide(currentIndex + direction);
 }
 
 // автопрокрутка
 function startAutoSlide() {
+  stopAutoSlide();
   autoSlideInterval = setInterval(() => moveSlide(1), 4000);
 }
 
-// остановка при наведении
 function stopAutoSlide() {
   clearInterval(autoSlideInterval);
 }
 
-// пауза при наведении и возобновление
-document.querySelector('.gallery-wrapper').addEventListener('mouseenter', stopAutoSlide);
-document.querySelector('.gallery-wrapper').addEventListener('mouseleave', startAutoSlide);
+// пауза при наведении
+document.querySelector(".gallery-wrapper").addEventListener("mouseenter", stopAutoSlide);
+document.querySelector(".gallery-wrapper").addEventListener("mouseleave", startAutoSlide);
 
-// запуск автопрокрутки
+// адаптация при изменении размера
+window.addEventListener("resize", () => showSlide(currentIndex));
+
+// запуск
+showSlide(0);
 startAutoSlide();
 </script>
 
