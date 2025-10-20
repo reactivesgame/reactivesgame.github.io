@@ -788,18 +788,20 @@
     </div>
   </footer>
 
-<!-- Gallery Slider Script with Swipe -->
+<!-- Gallery Slider Script with Real Swipe -->
 <script>
 const slider = document.getElementById("gallerySlider");
 const items = Array.from(document.querySelectorAll(".gallery-item"));
 let currentIndex = 0;
 const visibleCount = 3;
-const hasMultipleSlides = items.length > visibleCount;
+
+// если изображений ≤ 3 — скрыть стрелки
+if (items.length <= visibleCount) {
+  document.querySelectorAll(".gallery-btn").forEach(btn => btn.style.display = "none");
+}
 
 // показать слайды
 function showSlide(index) {
-  if (!hasMultipleSlides) return;
-
   const total = items.length;
 
   if (index < 0) currentIndex = total - visibleCount;
@@ -810,45 +812,44 @@ function showSlide(index) {
   slider.style.transform = `translateX(${offset}px)`;
 }
 
-// ручное управление (стрелки)
+// стрелки
 function moveSlide(direction) {
   showSlide(currentIndex + direction);
 }
 
+// свайп пальцем
+let startX = 0;
+let currentX = 0;
+let isDragging = false;
+
+const wrapper = document.querySelector(".gallery-wrapper");
+
+wrapper.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+  isDragging = true;
+}, { passive: true });
+
+wrapper.addEventListener("touchmove", e => {
+  if (!isDragging) return;
+  currentX = e.touches[0].clientX;
+}, { passive: true });
+
+wrapper.addEventListener("touchend", e => {
+  if (!isDragging) return;
+  const diff = currentX - startX;
+
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) moveSlide(-1); // свайп вправо
+    else moveSlide(1); // свайп влево
+  }
+
+  isDragging = false;
+}, { passive: true });
+
 // адаптация при изменении размера
 window.addEventListener("resize", () => showSlide(currentIndex));
 
-// если изображений ≤ 3 — скрыть стрелки
-if (!hasMultipleSlides) {
-  document.querySelectorAll(".gallery-btn").forEach(btn => btn.style.display = "none");
-}
-
-// === SWIPE для мобильных ===
-let touchStartX = 0;
-let touchEndX = 0;
-const galleryWrapper = document.querySelector('.gallery-wrapper');
-
-if (galleryWrapper) {
-  galleryWrapper.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].screenX;
-  }, { passive: true });
-
-  galleryWrapper.addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-  }, { passive: true });
-}
-
-function handleSwipe() {
-  const swipeDistance = touchEndX - touchStartX;
-
-  if (Math.abs(swipeDistance) > 50) {
-    if (swipeDistance > 0) moveSlide(-1); // свайп вправо
-    else moveSlide(1); // свайп влево
-  }
-}
-
-// старт
+// запуск
 showSlide(0);
 </script>
 
