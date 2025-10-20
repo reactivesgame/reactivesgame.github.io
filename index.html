@@ -787,19 +787,18 @@
       <p>© 2025 REACTIVES. All rights reserved.</p>
     </div>
   </footer>
-<!-- Gallery Slider Script -->
+
+<!-- Gallery Slider Script with Swipe -->
 <script>
 const slider = document.getElementById("gallerySlider");
 const items = Array.from(document.querySelectorAll(".gallery-item"));
 let currentIndex = 0;
 const visibleCount = 3;
-
-// если меньше или равно 3 — стрелки не нужны
 const hasMultipleSlides = items.length > visibleCount;
 
-// показ слайдов
+// показать слайды
 function showSlide(index) {
-  if (!hasMultipleSlides) return; // если только 3 изображения — не двигаем
+  if (!hasMultipleSlides) return;
 
   const total = items.length;
 
@@ -811,7 +810,7 @@ function showSlide(index) {
   slider.style.transform = `translateX(${offset}px)`;
 }
 
-// ручное управление
+// ручное управление (стрелки)
 function moveSlide(direction) {
   showSlide(currentIndex + direction);
 }
@@ -819,17 +818,12 @@ function moveSlide(direction) {
 // адаптация при изменении размера
 window.addEventListener("resize", () => showSlide(currentIndex));
 
-// если изображений ≤ 3 — прячем стрелки
+// если изображений ≤ 3 — скрыть стрелки
 if (!hasMultipleSlides) {
   document.querySelectorAll(".gallery-btn").forEach(btn => btn.style.display = "none");
 }
 
-// старт
-showSlide(0);
-</script>
-
-<!-- Swipe support for mobile -->
-<script>
+// === SWIPE для мобильных ===
 let touchStartX = 0;
 let touchEndX = 0;
 const galleryWrapper = document.querySelector('.gallery-wrapper');
@@ -837,25 +831,26 @@ const galleryWrapper = document.querySelector('.gallery-wrapper');
 if (galleryWrapper) {
   galleryWrapper.addEventListener('touchstart', e => {
     touchStartX = e.changedTouches[0].screenX;
-  });
+  }, { passive: true });
 
   galleryWrapper.addEventListener('touchend', e => {
     touchEndX = e.changedTouches[0].screenX;
     handleSwipe();
-  });
+  }, { passive: true });
 }
 
 function handleSwipe() {
   const swipeDistance = touchEndX - touchStartX;
 
-  // чтобы избежать ложных свайпов
   if (Math.abs(swipeDistance) > 50) {
     if (swipeDistance > 0) moveSlide(-1); // свайп вправо
     else moveSlide(1); // свайп влево
   }
 }
-</script>
 
+// старт
+showSlide(0);
+</script>
 
 
 </body>
