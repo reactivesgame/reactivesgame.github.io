@@ -788,7 +788,7 @@
     </div>
   </footer>
 
-<!-- Gallery Slider Script — стрелки всегда активны -->
+<!-- Gallery Slider Script — динамические стрелки -->
 <script>
 const slider = document.getElementById("gallerySlider");
 const items = Array.from(document.querySelectorAll(".gallery-item"));
@@ -796,21 +796,43 @@ const btnPrev = document.querySelector(".gallery-btn.prev");
 const btnNext = document.querySelector(".gallery-btn.next");
 
 let currentIndex = 0;
-const visibleCount = 3;
 
-// показать слайды
+// показать слайд
 function showSlide(index) {
   const total = items.length;
 
-  if (index < 0) currentIndex = total - visibleCount;
-  else if (index >= total - visibleCount + 1) currentIndex = 0;
-  else currentIndex = index;
+  // ограничиваем диапазон
+  if (index < 0) index = 0;
+  if (index > total - 1) index = total - 1;
 
+  currentIndex = index;
+
+  // движение
   const offset = -(currentIndex * (items[0].offsetWidth + 20));
   slider.style.transform = `translateX(${offset}px)`;
+
+  // обновить стрелки
+  updateArrows();
 }
 
-// стрелки
+// обновляем состояние стрелок
+function updateArrows() {
+  const total = items.length;
+
+  if (currentIndex === 0) {
+    btnPrev.style.display = "none"; // скрываем левую
+  } else {
+    btnPrev.style.display = "flex";
+  }
+
+  if (currentIndex === total - 1) {
+    btnNext.style.display = "none"; // скрываем правую
+  } else {
+    btnNext.style.display = "flex";
+  }
+}
+
+// обработчики стрелок
 btnPrev.addEventListener("click", () => moveSlide(-1));
 btnNext.addEventListener("click", () => moveSlide(1));
 
@@ -818,14 +840,14 @@ function moveSlide(direction) {
   showSlide(currentIndex + direction);
 }
 
-// адаптация при изменении размера
+// адаптация при изменении размера окна
 window.addEventListener("resize", () => showSlide(currentIndex));
 
-// запуск
+// старт
 showSlide(0);
 </script>
 
-
+<style>
 /* --- Responsive Mobile Fix --- */
 @media (max-width: 768px) {
   .gallery-wrapper {
@@ -837,7 +859,7 @@ showSlide(0);
   .gallery-slider {
     display: flex;
     transition: transform 0.4s ease;
-    gap: 12px; /* расстояние между изображениями */
+    gap: 12px;
   }
 
   .gallery-item {
@@ -856,7 +878,7 @@ showSlide(0);
     transform: scale(0.95);
   }
 
-  /* стрелки всегда видны */
+  /* стрелки */
   .gallery-btn {
     font-size: 3.2rem;
     position: absolute;
@@ -865,6 +887,7 @@ showSlide(0);
     color: hsl(180, 100%, 60%);
     z-index: 10;
     background: rgba(0, 0, 0, 0.4);
+    border: none;
     border-radius: 50%;
     width: 60px;
     height: 60px;
@@ -872,6 +895,7 @@ showSlide(0);
     align-items: center;
     justify-content: center;
     transition: 0.3s ease;
+    cursor: pointer;
   }
 
   .gallery-btn:hover {
@@ -882,41 +906,7 @@ showSlide(0);
   .gallery-btn.prev { left: 10px; }
   .gallery-btn.next { right: 10px; }
 }
-
-  <!-- Mobile buttons fix -->
-<script>
-if (window.innerWidth <= 768) {
-  const slider = document.getElementById("gallerySlider");
-  const items = Array.from(document.querySelectorAll(".gallery-item"));
-  const btnPrev = document.querySelector(".gallery-btn.prev");
-  const btnNext = document.querySelector(".gallery-btn.next");
-  let currentIndex = 0;
-  const visibleCount = 3;
-
-  function showSlideMobile(index) {
-    const total = items.length;
-    if (index < 0) currentIndex = total - visibleCount;
-    else if (index >= total - visibleCount + 1) currentIndex = 0;
-    else currentIndex = index;
-
-    const offset = -(currentIndex * (items[0].offsetWidth + 20));
-    slider.style.transform = `translateX(${offset}px)`;
-  }
-
-  function moveSlideMobile(direction) {
-    showSlideMobile(currentIndex + direction);
-  }
-
-  btnPrev.addEventListener("click", () => moveSlideMobile(-1));
-  btnNext.addEventListener("click", () => moveSlideMobile(1));
-
-  window.addEventListener("resize", () => {
-    if (window.innerWidth <= 768) showSlideMobile(currentIndex);
-  });
-
-  showSlideMobile(0);
-}
-</script>
+</style>
 
 
 </body>
