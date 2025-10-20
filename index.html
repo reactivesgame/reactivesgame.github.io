@@ -804,31 +804,27 @@
 <script>
 let currentIndex = 0;
 const slider = document.getElementById("gallerySlider");
-const items = Array.from(document.querySelectorAll(".gallery-item img"));
+const items = Array.from(document.querySelectorAll(".gallery-item"));
 const visibleCount = 3;
 let autoSlideInterval;
 
-// фильтруем только реально существующие изображения
-const realItems = items.filter(img => img.src && img.src.trim() !== "");
-
-// основной показ
-function showSlide(index) {
-  const total = realItems.length;
-
-  if (total === 0) return;
-
-  if (index < 0) currentIndex = total - visibleCount;
-  else if (index >= total - visibleCount + 1) currentIndex = 0;
-  else currentIndex = index;
-
-  const itemWidth = realItems[0].offsetWidth + 20; // ширина + отступ
-  const offset = -(currentIndex * itemWidth);
-  slider.style.transform = `translateX(${offset}px)`;
-}
-
-// движение
+// функция перелистывания
 function moveSlide(direction) {
-  showSlide(currentIndex + direction);
+  const totalItems = items.length;
+  currentIndex += direction;
+
+  // если дошли до конца — возвращаемся на начало
+  if (currentIndex >= totalItems - visibleCount + 1) {
+    currentIndex = 0;
+  }
+
+  // если ушли влево с самого начала — возвращаем в конец
+  if (currentIndex < 0) {
+    currentIndex = totalItems - visibleCount;
+  }
+
+  const offset = -(currentIndex * (items[0].offsetWidth + 20));
+  slider.style.transform = `translateX(${offset}px)`;
 }
 
 // автопрокрутка
@@ -837,20 +833,24 @@ function startAutoSlide() {
   autoSlideInterval = setInterval(() => moveSlide(1), 4000);
 }
 
+// остановка при наведении
 function stopAutoSlide() {
   clearInterval(autoSlideInterval);
 }
 
-// пауза при наведении
+// события для мыши
 document.querySelector(".gallery-wrapper").addEventListener("mouseenter", stopAutoSlide);
 document.querySelector(".gallery-wrapper").addEventListener("mouseleave", startAutoSlide);
 
-// адаптация при изменении размера
-window.addEventListener("resize", () => showSlide(currentIndex));
+// адаптация при изменении окна
+window.addEventListener("resize", () => {
+  const offset = -(currentIndex * (items[0].offsetWidth + 20));
+  slider.style.transform = `translateX(${offset}px)`;
+});
 
-// запуск
-showSlide(0);
+// старт
 startAutoSlide();
+
 </script>
 
 
