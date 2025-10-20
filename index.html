@@ -589,13 +589,21 @@
   .gallery-wrapper {
     justify-content: center;
     overflow: hidden;
+    position: relative;
+    touch-action: pan-y;
+  }
+
+  .gallery-slider {
+    display: flex;
+    transition: transform 0.4s ease;
+    gap: 12px; /* расстояние между изображениями */
   }
 
   .gallery-item {
-    flex: 0 0 90%; /* шире карточки */
-    width: 90%;
+    flex: 0 0 85%; /* делаем изображения чуть меньше экрана */
+    width: 85%;
     height: auto;
-    margin: 0 auto; /* центрируем */
+    margin: 0 auto;
   }
 
   .gallery-item img {
@@ -603,14 +611,15 @@
     height: auto;
     object-fit: contain;
     display: block;
-    margin: 0 auto;
-    transform: none; /* убираем уменьшение */
+    border-radius: 1rem;
+    transform: scale(0.95); /* чуть уменьшает изображение */
   }
 
   .gallery-btn {
     font-size: 3rem;
   }
 }
+
 
   </style>
 </head>
@@ -817,6 +826,32 @@ if (!hasMultipleSlides) {
 
 // старт
 showSlide(0);
+</script>
+
+  <!-- Swipe support for mobile -->
+<script>
+let touchStartX = 0;
+let touchEndX = 0;
+const galleryWrapper = document.querySelector('.gallery-wrapper');
+
+if (galleryWrapper) {
+  galleryWrapper.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+
+  galleryWrapper.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  });
+
+  function handleSwipe() {
+    const swipeDistance = touchEndX - touchStartX;
+    if (Math.abs(swipeDistance) > 50) { // фильтр случайных касаний
+      if (swipeDistance > 0) moveSlide(-1); // свайп вправо
+      else moveSlide(1); // свайп влево
+    }
+  }
+}
 </script>
 
 
