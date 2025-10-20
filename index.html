@@ -845,17 +845,20 @@ document.addEventListener("DOMContentLoaded", () => {
     position: relative;
     overflow: hidden;
     justify-content: center;
+    display: flex;
+    align-items: center;
   }
 
   .gallery-slider {
     display: flex;
     transition: transform 0.4s ease;
-    gap: 12px;
+    gap: 16px; /* немного больше промежуток между кадрами */
+    padding: 0 8%; /* добавляем отступы слева и справа для симметрии */
   }
 
   .gallery-item {
-    flex: 0 0 85%;
-    width: 85%;
+    flex: 0 0 80%;
+    width: 80%;
     margin: 0 auto;
   }
 
@@ -867,6 +870,7 @@ document.addEventListener("DOMContentLoaded", () => {
     border-radius: 1rem;
   }
 
+  /* стрелки */
   .gallery-btn {
     font-size: 3rem;
     position: absolute;
@@ -885,8 +889,8 @@ document.addEventListener("DOMContentLoaded", () => {
     cursor: pointer;
   }
 
-  .gallery-btn.prev { left: 10px; }
-  .gallery-btn.next { right: 10px; }
+  .gallery-btn.prev { left: 12px; }
+  .gallery-btn.next { right: 12px; }
 }
 </style>
 
