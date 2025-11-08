@@ -675,7 +675,12 @@
     </div>
   </section>
 
- 
+ <!-- === App Store Button === -->
+<div class="store-button-wrapper" style="text-align:center; margin-top: 3rem;">
+  <a href="https://apps.apple.com/de/app/reactives/id6749779669" target="_blank" rel="noopener noreferrer" class="appstore-btn">
+    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" class="appstore-img">
+  </a>
+</div>
 
 <!-- Gallery Section -->
 <section style="background: linear-gradient(to bottom, var(--background), hsl(250 30% 15% / 0.3), var(--background));">
@@ -866,6 +871,25 @@ slider.style.transform = `translateX(${offset}px)`;
   .gallery-btn.prev { left: 4%; } /* стрелки немного ближе к краю */
   .gallery-btn.next { right: 4%; }
 }
+
+  /* === App Store Button === */
+.appstore-btn {
+  display: inline-block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.appstore-img {
+  height: 60px;
+  width: auto;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 20px hsl(180 100% 50% / 0.3);
+}
+
+.appstore-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px hsl(180 100% 50% / 0.6);
+}
+</style>  
 
 </script>
 
