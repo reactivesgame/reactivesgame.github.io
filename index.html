@@ -996,6 +996,12 @@ slider.style.transform = `translateX(${offset}px)`;
 .store-coming-soon:hover .coming-soon-overlay {
   opacity: 1;
 }
+  /* На мобильных overlay всегда виден */
+@media (max-width: 768px) {
+  .coming-soon-overlay {
+    opacity: 1;
+  }
+}
 </style>  
 
 </script>
