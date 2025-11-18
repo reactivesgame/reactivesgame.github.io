@@ -633,6 +633,15 @@
     <div class="hero-content">
       <h1 class="text-gradient">REACTIVES</h1>
       <p class="hero-tagline">A modern arcade of focus and flow.</p>
+      <div class="download-buttons">
+  <a href="https://apps.apple.com/de/app/reactives/id6749779669" target="_blank" class="store-btn">
+    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+  </a>
+
+  <a href="https://play.google.com/store/apps/details?id=com.reactivesgame" target="_blank" class="store-btn">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play">
+  </a>
+</div>
     </div>
     
   
@@ -675,12 +684,6 @@
     </div>
   </section>
 
- <!-- === App Store Button === -->
-<div class="store-button-wrapper" style="text-align:center; margin-top: 3rem;">
-  <a href="https://apps.apple.com/de/app/reactives/id6749779669" target="_blank" rel="noopener noreferrer" class="appstore-btn">
-    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store" class="appstore-img">
-  </a>
-</div>
 
 <!-- Gallery Section -->
 <section style="background: linear-gradient(to bottom, var(--background), hsl(250 30% 15% / 0.3), var(--background));">
@@ -888,6 +891,34 @@ slider.style.transform = `translateX(${offset}px)`;
 .appstore-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 30px hsl(180 100% 50% / 0.6);
+}
+
+  .download-buttons {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  z-index: 20;
+}
+
+.download-buttons img {
+  height: 60px;
+  width: auto;
+  border-radius: 0.75rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 20px hsl(180 100% 50% / 0.3);
+}
+
+.download-buttons img:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 35px hsl(180 100% 50% / 0.7);
+}
+
+@media (max-width: 600px) {
+  .download-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
 }
 </style>  
 
