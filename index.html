@@ -633,17 +633,22 @@
     <div class="hero-content">
       <h1 class="text-gradient">REACTIVES</h1>
       <p class="hero-tagline">A modern arcade of focus and flow.</p>
-   <div class="download-buttons">
+  <div class="download-buttons">
 
-  <!-- APP STORE -->
+  <!-- Apple Store -->
   <a href="https://apps.apple.com/de/app/reactives/id6749779669" target="_blank" class="store-btn">
-    <img class="store-img apple-img" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+    <div class="store-badge">
+      <img class="store-img" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+    </div>
   </a>
 
-  <!-- GOOGLE PLAY  -->
-  <a class="store-btn disabled-btn">
-    <img class="store-img google-img" src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Coming Soon">
-  </a>
+  <!-- Google Play — Coming Soon  -->
+  <div class="store-btn store-coming-soon">
+    <div class="store-badge">
+      <img class="store-img" src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play Coming Soon">
+      <div class="coming-soon-overlay">COMING SOON</div>
+    </div>
+  </div>
 
 </div>
     </div>
@@ -940,6 +945,56 @@ slider.style.transform = `translateX(${offset}px)`;
   pointer-events: none;   
   opacity: 0.65;         
   cursor: default;
+}
+  /* === Store Buttons Block === */
+.download-buttons {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  z-index: 20;
+}
+
+.store-badge {
+  position: relative;
+  display: inline-block;
+}
+
+.store-img {
+  height: 60px;
+  width: auto;
+  border-radius: 0.75rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 20px hsl(180 100% 50% / 0.3);
+}
+
+/* Hover effect for Apple Store */
+.store-btn:hover .store-img {
+  transform: scale(1.06);
+  box-shadow: 0 0 35px hsl(180 100% 50% / 0.7);
+}
+
+/* === COMING SOON Overlay === */
+.coming-soon-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(3px);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(180, 100%, 60%);
+  font-size: 0.9rem;
+  letter-spacing: 0.1rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Show overlay on hover */
+.store-coming-soon:hover .coming-soon-overlay {
+  opacity: 1;
 }
 </style>  
 
