@@ -633,14 +633,18 @@
     <div class="hero-content">
       <h1 class="text-gradient">REACTIVES</h1>
       <p class="hero-tagline">A modern arcade of focus and flow.</p>
-      <div class="download-buttons">
+   <div class="download-buttons">
+
+  <!-- APP STORE -->
   <a href="https://apps.apple.com/de/app/reactives/id6749779669" target="_blank" class="store-btn">
-    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+    <img class="store-img apple-img" src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
   </a>
 
-  <a href="https://play.google.com/store/apps/details?id=com.reactivesgame" target="_blank" class="store-btn">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play">
+  <!-- GOOGLE PLAY  -->
+  <a class="store-btn disabled-btn">
+    <img class="store-img google-img" src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Coming Soon">
   </a>
+
 </div>
     </div>
     
@@ -919,6 +923,23 @@ slider.style.transform = `translateX(${offset}px)`;
     flex-direction: column;
     gap: 1rem;
   }
+}
+  .store-img {
+  height: 60px;     /* одинаковый размер */
+  width: auto;
+  border-radius: 0.75rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 20px hsl(180 100% 50% / 0.3);
+}
+
+.store-btn:hover img {
+  transform: scale(1.06);
+  box-shadow: 0 0 35px hsl(180 100% 50% / 0.7);
+}
+  .disabled-btn {
+  pointer-events: none;   
+  opacity: 0.65;         
+  cursor: default;
 }
 </style>  
 
